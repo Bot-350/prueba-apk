@@ -1,0 +1,44 @@
+{
+  "summary": "Iteration 3 retest: Profile logout fix CONFIRMED WORKING on web; Cart buy-now smoke CONFIRMED WORKING (no regression). Both remaining items from iteration 2 now pass.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": []
+  },
+  "test_report_links": ["/app/test_reports/iteration_3.json"],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "profile.tsx: Pressable + inlined onPress with window.confirm on web works reliably. This pattern is recommended over the previous TouchableOpacity+outer-closure approach for web-critical handlers.",
+    "Non-blocking deprecation warnings persist across screens: 'shadow* style props are deprecated (use boxShadow)', 'Image.style.resizeMode deprecated (use props.resizeMode)', 'props.pointerEvents deprecated (use style.pointerEvents)'. Safe to fix in a follow-up cleanup pass; no functional impact."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "not retested (out of scope for frontend-only request)",
+    "frontend": "100% (2/2 retested fixes pass): profile logout PASS, cart buy-now PASS"
+  },
+  "seed_data_creation": "Re-seeded Mongo user_sessions doc {session_token: test_session_arthub_01, user_id: user_arthub_test01, expires_at: +7d} before each auth-gated test pass. Cmd: mongosh test_database --eval 'db.user_sessions.deleteMany(...); db.user_sessions.insertOne(...)'.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Viewport 420x900. Auth bypass: goto '/', then localStorage.setItem('session_token','test_session_arthub_01'), then navigate to target route. Confirm dialogs on web must be auto-accepted via page.on('dialog', async d => await d.accept()); use asyncio.create_task for page.click with no_wait_after=True because the beforeunload/confirm flow can stall click resolution. Profile logout fires window.confirm('Log out of ArtHub?') -> on accept: signOut() clears local state + calls /api/auth/logout + router.replace('/login'). Cart buy-now path: click art-card-seed-1 -> artwork-add-to-cart -> /cart -> cart-buy-now-btn -> clearCart then Alert -> router.push('/(tabs)'); revisit /cart to assert cart-empty present and cart-buy-now-btn + cart-total absent. Mongo session is deleted by /api/auth/logout, so re-seed before any subsequent auth test.",
+  "rca_of_issue": "Root cause of iteration 2 logout failure was likely a stale-closure / hoisting interaction in the outer `doLogout` function (declared inside component body but captured by the TouchableOpacity onClick at first render). Fix applied by main agent: replaced TouchableOpacity with Pressable AND inlined the handler at the onPress site (onPress={() => { const run = async () => {...}; if (Platform.OS==='web') { const ok = window.confirm(...); if (ok) run(); return; } Alert.alert(...) }}). Verified: confirm dialog fires, URL transitions to /login, localStorage.session_token cleared to null, login-google-button renders. No regression on cart checkout flow.",
+  "test_steps_executed": {
+    "logout": [
+      "Re-seed session via mongosh (test_session_arthub_01)",
+      "Open '/' at 420x900, localStorage.setItem('session_token','test_session_arthub_01')",
+      "Navigate to /profile, wait for profile-screen, verify name='Test Artist' and email='artist@arthub.test'",
+      "Click profile-logout-btn (force=True, no_wait_after=True); dialog handler accepts 'Log out of ArtHub?'",
+      "Assertions: URL ends with /login ✓, localStorage.session_token === null ✓, login-google-button visible ✓"
+    ],
+    "cart_buy_now": [
+      "Re-seed session via mongosh",
+      "Open '/' and set localStorage session_token",
+      "Navigate to home tabs, click art-card-seed-1",
+      "Click artwork-add-to-cart (added 'Neon Dreams' $120.00)",
+      "Navigate to /cart; verify cart-buy-now-btn present and cart-total=$120.00",
+      "Click cart-buy-now-btn; accept Alert dialog; URL redirects to /(tabs)",
+      "Re-navigate to /cart; assert cart-empty present and cart-buy-now-btn + cart-total absent ✓"
+    ]
+  }
+}

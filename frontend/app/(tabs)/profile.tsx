@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, Dimensions, Alert, Platform } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, Dimensions, Alert, Platform, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { LogOut } from 'lucide-react-native';
@@ -16,25 +16,6 @@ export default function ProfileScreen() {
   const router = useRouter();
 
   const myArt = artworks.filter((a) => a.uploadedBy && a.uploadedBy === user?.user_id);
-
-  const doLogout = () => {
-    const confirmLogout = async () => {
-      await signOut();
-      router.replace('/login');
-    };
-    if (Platform.OS === 'web') {
-      // Alert.alert callbacks are unreliable on web — confirm synchronously
-      // eslint-disable-next-line no-alert
-      if (typeof window !== 'undefined' && window.confirm('Log out of ArtHub?')) {
-        confirmLogout();
-      }
-      return;
-    }
-    Alert.alert('Log out', 'Are you sure you want to log out?', [
-      { text: 'Cancel', style: 'cancel' },
-      { text: 'Log out', style: 'destructive', onPress: confirmLogout },
-    ]);
-  };
 
   return (
     <SafeAreaView style={styles.root} edges={['top']} testID="profile-screen">
@@ -62,10 +43,30 @@ export default function ProfileScreen() {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.logoutBtn} onPress={doLogout} testID="profile-logout-btn">
+        <Pressable
+          style={({ pressed }) => [styles.logoutBtn, pressed && { opacity: 0.7 }]}
+          onPress={() => {
+            // Inline to avoid any closure issues on web
+            const run = async () => {
+              await signOut();
+              router.replace('/login');
+            };
+            if (Platform.OS === 'web') {
+              // eslint-disable-next-line no-alert
+              const ok = typeof window !== 'undefined' ? window.confirm('Log out of ArtHub?') : true;
+              if (ok) run();
+              return;
+            }
+            Alert.alert('Log out', 'Are you sure you want to log out?', [
+              { text: 'Cancel', style: 'cancel' },
+              { text: 'Log out', style: 'destructive', onPress: run },
+            ]);
+          }}
+          testID="profile-logout-btn"
+        >
           <LogOut color={COLORS.text} size={16} strokeWidth={2} />
           <Text style={styles.logoutText}>Log out</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       <View style={styles.sectionHeader}>

@@ -1,14 +1,14 @@
 workflows:
   android-workflow:
-    name: Android APK Build
+    name: Construcción APK de Android
     instance_type: mac_mini_m1
-    working_directory: frontend
+    max_build_duration: 60
     scripts:
       - name: Get Flutter packages
         script: |
-          flutter pub get
+          cd frontend && flutter pub get
       - name: Build Android APK
         script: |
-          flutter build apk --release
+          cd frontend && flutter build apk --release
     artifacts:
       - frontend/build/app/outputs/flutter-apk/*.apk

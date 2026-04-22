@@ -17,14 +17,17 @@ jobs:
         with:
           channel: 'stable'
           
+      - name: Accept Android Licenses
+        run: yes | flutter doctor --android-licenses || true
+          
       - name: Build APK
         run: |
           cd frontend
           flutter pub get
-          flutter build apk --release
+          flutter build apk --release --no-tree-shake-icons
           
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: frontend/build/app/outputs/flutter-apk/app-release.apk
+          path: frontend/build/app/outputs/flutter-apk/*.apk

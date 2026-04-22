@@ -53,7 +53,7 @@ export default function ProfileScreen() {
             };
             if (Platform.OS === 'web') {
               // eslint-disable-next-line no-alert
-              const ok = typeof window !== 'undefined' ? window.confirm('Log out of ArtHub?') : true;
+              const ok = typeof window !== 'undefined' ? window.confirm('Log out of papilinesart?') : true;
               if (ok) run();
               return;
             }

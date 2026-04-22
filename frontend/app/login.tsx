@@ -63,9 +63,9 @@ export default function LoginScreen() {
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.content}>
           <View style={styles.logoBadge}>
-            <Text style={styles.logoText}>DA</Text>
+            <Text style={styles.logoText}>PA</Text>
           </View>
-          <Text style={styles.title}>ArtHub</Text>
+          <Text style={styles.title}>papilinesart</Text>
           <Text style={styles.subtitle}>
             A gallery built by creators. Browse, collect, and share one-of-a-kind digital art.
           </Text>

@@ -47,9 +47,9 @@ export default function HomeScreen() {
       <View style={styles.header}>
         <View style={styles.brandRow}>
           <View style={styles.logoMini}>
-            <Text style={styles.logoMiniText}>DA</Text>
+            <Text style={styles.logoMiniText}>PA</Text>
           </View>
-          <Text style={styles.brand}>ArtHub</Text>
+          <Text style={styles.brand}>papilinesart</Text>
         </View>
         <TouchableOpacity style={styles.searchBtn} testID="home-search-btn" activeOpacity={0.8}>
           <Search color={COLORS.text} size={20} strokeWidth={2} />

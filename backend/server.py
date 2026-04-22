@@ -66,7 +66,7 @@ async def get_current_user(authorization: Optional[str] = Header(None)) -> User:
 # ---------- Routes ----------
 @api_router.get("/")
 async def root():
-    return {"message": "ArtHub API alive"}
+    return {"message": "papilinesart API alive"}
 
 
 @api_router.post("/auth/session", response_model=SessionResponse)

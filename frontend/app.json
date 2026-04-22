@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "ArtHub",
+    "name": "papilinesart",
     "slug": "frontend",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -41,7 +41,7 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Allow ArtHub to access your photos so you can upload artwork."
+          "photosPermission": "Allow papilinesart to access your photos so you can upload artwork."
         }
       ]
     ],

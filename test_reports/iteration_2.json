@@ -1,0 +1,40 @@
+{
+  "summary": "Retested fixes from iteration 1. Cart Buy-now fix CONFIRMED WORKING on web. Profile logout fix STILL BROKEN: tapping profile-logout-btn does not invoke doLogout (window.confirm never called, no redirect, session token remains, user stays signed in). Root cause appears to be TouchableOpacity onPress NOT firing for the logout button specifically, even though the same mechanism works for cart-buy-now-btn. Smoke checks all pass.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Profile (app/(tabs)/profile.tsx) — doLogout handler",
+        "issue": "Tapping profile-logout-btn produces a DOM click (capture-phase listener fires) and React has onClick attached on the element, but doLogout body never executes: window.confirm is never invoked (verified by replacing window.confirm with a logger/stub — no calls). Consequently: (a) no confirm dialog appears, (b) signOut() never runs, (c) router.replace('/login') never fires, (d) localStorage.session_token stays intact, (e) URL remains /profile, (f) Profile screen still shows 'Test Artist'. This happens for BOTH real Playwright clicks and synthetic pointerdown/pointerup/mouse events. Direct window.confirm('x') via evaluate DOES fire Playwright dialog event, so Chromium dialogs work — the issue is doLogout is not being called at all.",
+        "testID": "profile-logout-btn",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [],
+    "react_native_issues": [
+      {"component": "TouchableOpacity rendering", "issue": "react-native-web renders TouchableOpacity as <div>. onClick is attached at React level, but onPress does not fire on profile-logout-btn. Note: cart-buy-now-btn (same TouchableOpacity primitive) works correctly — so there is something specific to this button/handler that is broken."}
+    ]
+  },
+  "test_report_links": ["/app/backend/tests/test_arthub_api.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [
+    "Fix #2 (logout) is NOT working. Investigate why onPress/onClick on profile-logout-btn is not dispatching doLogout. Suggested debugging: add a console.log('doLogout tapped') at the very first line of doLogout and in the onPress={() => { console.log('onPress'); doLogout(); }} wrapper, then retest. If the log never prints, the click synthetic event from RN-Web is not reaching TouchableOpacity's responder chain for this specific instance.",
+    "Likely fixes to try: (a) inline the onPress handler: onPress={() => { if (Platform.OS==='web') { if (window.confirm('Log out?')) { await signOut(); router.replace('/login'); } return; } ...} (b) Replace TouchableOpacity with Pressable; (c) Ensure nothing above the button (e.g., absolutely-positioned headerBg at top:0/height:160 or profileCard pointer-events) is intercepting. Although the rect (x:149, y:287, w:121, h:40) sits well below headerBg height=160, double-check stacking with z-index.",
+    "Alternative quick-fix: drop the Platform.OS==='web' branch and use window.confirm unconditionally, OR skip confirm on web and logout directly (UX choice).",
+    "Unrelated: deprecation warnings persist (shadow*, Image.resizeMode, props.pointerEvents) — non-blocking."
+  ],
+  "critical_code_review_comments": [
+    "profile.tsx doLogout is declared inside component body but window.confirm path is behaving as if doLogout is never invoked; instrumenting the very first line of doLogout with console.log is the fastest next step.",
+    "(tabs)/_layout.tsx auth-gate effect WILL redirect to /login when user becomes null (tested inference), so the only thing missing is signOut() getting called. The fix should focus on ensuring onPress fires."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "100% (unchanged — not retested)",
+    "frontend": "50% of fixes (1/2): cart buy-now PASS, profile logout FAIL. Smoke checks 100%."
+  },
+  "seed_data_creation": "Reused existing mongo seed (user_arthub_test01, session token test_session_arthub_01). Auth via localStorage.setItem('session_token','test_session_arthub_01') on web.",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Viewport 420x900. Login bypass: navigate to '/', then run localStorage.setItem('session_token','test_session_arthub_01') and reload. Cart buy-now ✅ works (cart-empty appears, cart-tab-badge removed, cart-total disappears — verified by returning to /cart after redirect to /(tabs)). Logout ❌ still broken: page.click on profile-logout-btn produces DOM click (confirmed via capture-phase listener) but doLogout never runs — window.confirm is never invoked and session token stays. Add console.log diagnostics in doLogout before retesting.",
+  "rca_of_issue": "Cart fix: moving await clearCart() before Alert.alert() works because state update happens independently of the alert dialog UX — verified. Logout bug persists at a different layer: the onPress handler itself never fires. Given cart-buy-now-btn (identical TouchableOpacity pattern) works, suspect either: (1) a JS error inside doLogout before reaching window.confirm (silenced by React), (2) the closure captures a destructured value that throws (e.g., useAuth's signOut is missing at render time), or (3) rendering order: profile.tsx reads useAuth() at top; if user transitions to null between render and tap, signOut could be undefined — but this is unlikely since user is clearly present. Main agent should instrument doLogout with console.log at line 1 to localize."
+}

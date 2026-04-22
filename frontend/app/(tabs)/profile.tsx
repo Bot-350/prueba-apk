@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, Dimensions, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, Dimensions, Alert, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { LogOut } from 'lucide-react-native';
@@ -18,16 +18,21 @@ export default function ProfileScreen() {
   const myArt = artworks.filter((a) => a.uploadedBy && a.uploadedBy === user?.user_id);
 
   const doLogout = () => {
+    const confirmLogout = async () => {
+      await signOut();
+      router.replace('/login');
+    };
+    if (Platform.OS === 'web') {
+      // Alert.alert callbacks are unreliable on web — confirm synchronously
+      // eslint-disable-next-line no-alert
+      if (typeof window !== 'undefined' && window.confirm('Log out of ArtHub?')) {
+        confirmLogout();
+      }
+      return;
+    }
     Alert.alert('Log out', 'Are you sure you want to log out?', [
       { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Log out',
-        style: 'destructive',
-        onPress: async () => {
-          await signOut();
-          router.replace('/login');
-        },
-      },
+      { text: 'Log out', style: 'destructive', onPress: confirmLogout },
     ]);
   };
 

@@ -16,21 +16,16 @@ export default function CartScreen() {
 
   const total = items.reduce((sum, it) => sum + it.price, 0);
 
-  const checkout = () => {
+  const checkout = async () => {
     if (!items.length) return;
+    const count = items.length;
+    const amount = total.toFixed(2);
+    await clearCart();
     Alert.alert(
       'Order placed!',
-      `You just collected ${items.length} piece${items.length === 1 ? '' : 's'} for $${total.toFixed(2)}. (Fake checkout)`,
-      [
-        {
-          text: 'Nice!',
-          onPress: async () => {
-            await clearCart();
-            router.push('/(tabs)');
-          },
-        },
-      ],
+      `You just collected ${count} piece${count === 1 ? '' : 's'} for $${amount}. (Fake checkout)`,
     );
+    router.push('/(tabs)');
   };
 
   return (

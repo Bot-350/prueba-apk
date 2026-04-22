@@ -1,0 +1,355 @@
+{
+  "theme": "Dark",
+  "archetype": "Archetype 5 (Jewel & Luxury) paired with Archetype 7 (Electric Accent) for an Art Portfolio aesthetic.",
+  "colors": {
+    "background": {
+      "default": "#0A0A0A",
+      "surface": "#171717",
+      "surfaceElevated": "#262626",
+      "tabBar": "#0F0F0F"
+    },
+    "primary": {
+      "default": "#00E59B",
+      "pressed": "#00C283",
+      "subtle": "rgba(0, 229, 155, 0.15)"
+    },
+    "text": {
+      "primary": "#FFFFFF",
+      "secondary": "#A3A3A3",
+      "tertiary": "#737373",
+      "onPrimary": "#000000"
+    },
+    "border": {
+      "default": "#262626",
+      "focus": "#00E59B"
+    },
+    "feedback": {
+      "error": "#EF4444",
+      "success": "#22C55E"
+    }
+  },
+  "typography": {
+    "instructions": "Use 'expo-google-fonts' to load 'Outfit' for all headings/accents, and 'Manrope' for body copy. Avoid Inter or Roboto.",
+    "fonts": {
+      "heading": "Outfit",
+      "body": "Manrope"
+    },
+    "scale": {
+      "h1": {
+        "fontSize": 32,
+        "fontFamily": "Outfit_700Bold",
+        "lineHeight": 40,
+        "letterSpacing": -0.5
+      },
+      "h2": {
+        "fontSize": 24,
+        "fontFamily": "Outfit_600SemiBold",
+        "lineHeight": 32,
+        "letterSpacing": -0.5
+      },
+      "h3": {
+        "fontSize": 20,
+        "fontFamily": "Outfit_600SemiBold",
+        "lineHeight": 28,
+        "letterSpacing": -0.5
+      },
+      "bodyLarge": {
+        "fontSize": 16,
+        "fontFamily": "Manrope_500Medium",
+        "lineHeight": 24
+      },
+      "body": {
+        "fontSize": 14,
+        "fontFamily": "Manrope_400Regular",
+        "lineHeight": 20
+      },
+      "caption": {
+        "fontSize": 12,
+        "fontFamily": "Manrope_500Medium",
+        "lineHeight": 16,
+        "letterSpacing": 0.2
+      },
+      "button": {
+        "fontSize": 16,
+        "fontFamily": "Outfit_600SemiBold",
+        "lineHeight": 24,
+        "letterSpacing": 0.2
+      }
+    }
+  },
+  "spacing": {
+    "2xs": 4,
+    "xs": 8,
+    "sm": 12,
+    "md": 16,
+    "lg": 24,
+    "xl": 32,
+    "2xl": 48
+  },
+  "radii": {
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "full": 9999
+  },
+  "elevation_and_shadows": {
+    "card": {
+      "elevation": 4,
+      "shadowColor": "#000000",
+      "shadowOffset": {
+        "width": 0,
+        "height": 4
+      },
+      "shadowOpacity": 0.2,
+      "shadowRadius": 12
+    },
+    "button": {
+      "elevation": 6,
+      "shadowColor": "#00E59B",
+      "shadowOffset": {
+        "width": 0,
+        "height": 4
+      },
+      "shadowOpacity": 0.25,
+      "shadowRadius": 8
+    }
+  },
+  "components": {
+    "artworkCard": {
+      "layout": "Masonry or Grid item. Image occupies 100% width, height varies by aspect ratio.",
+      "style": {
+        "borderRadius": "radii.lg",
+        "backgroundColor": "colors.background.surface",
+        "overflow": "hidden"
+      },
+      "textContainer": {
+        "padding": "spacing.md"
+      },
+      "animations": {
+        "pressScale": 0.97,
+        "duration": 150
+      }
+    },
+    "primaryButton": {
+      "style": {
+        "backgroundColor": "colors.primary.default",
+        "borderRadius": "radii.full",
+        "paddingVertical": "spacing.md",
+        "paddingHorizontal": "spacing.lg",
+        "alignItems": "center"
+      },
+      "textStyle": {
+        "color": "colors.text.onPrimary",
+        "fontFamily": "Outfit_600SemiBold"
+      },
+      "animations": {
+        "pressScale": 0.95,
+        "backgroundColorOnPress": "colors.primary.pressed"
+      }
+    },
+    "secondaryButton": {
+      "style": {
+        "backgroundColor": "transparent",
+        "borderWidth": 1,
+        "borderColor": "colors.border.default",
+        "borderRadius": "radii.full",
+        "paddingVertical": "spacing.md",
+        "paddingHorizontal": "spacing.lg",
+        "alignItems": "center"
+      }
+    },
+    "priceChip": {
+      "style": {
+        "backgroundColor": "colors.primary.subtle",
+        "borderRadius": "radii.full",
+        "paddingVertical": "spacing.2xs",
+        "paddingHorizontal": "spacing.sm"
+      },
+      "textStyle": {
+        "color": "colors.primary.default",
+        "fontFamily": "Outfit_700Bold",
+        "fontSize": 14
+      }
+    },
+    "inputField": {
+      "style": {
+        "backgroundColor": "colors.background.surface",
+        "borderWidth": 1,
+        "borderColor": "colors.border.default",
+        "borderRadius": "radii.md",
+        "padding": "spacing.md",
+        "color": "colors.text.primary"
+      },
+      "focusStyle": {
+        "borderColor": "colors.primary.default"
+      }
+    },
+    "bottomTabBar": {
+      "style": {
+        "backgroundColor": "colors.background.tabBar",
+        "borderTopWidth": 1,
+        "borderTopColor": "colors.border.default",
+        "height": 60,
+        "paddingBottom": 8
+      },
+      "activeTintColor": "colors.primary.default",
+      "inactiveTintColor": "colors.text.tertiary"
+    }
+  },
+  "screens": {
+    "Login": {
+      "layout": "Centered layout with high-impact visual.",
+      "guidance": "Use Emergent-managed Google social login. Display 'Continue with Google' button. Background can be a darkened hero image with a deep radial gradient overlay."
+    },
+    "Home": {
+      "layout": "Masonry feed (e.g. FlashList with MasonryLayout or @react-native-seoul/masonry-list).",
+      "guidance": "Top header with App Logo left-aligned, Search icon right-aligned. Cards show Image, Title, Author, Price."
+    },
+    "Detail": {
+      "layout": "ScrollView with Edge-to-edge header image.",
+      "guidance": "Artwork fills top space, fading into surface color using LinearGradient. Title, Author Avatar + Name inline. Description paragraph. Sticky bottom view with Price and 'Add to Cart' button."
+    },
+    "Upload": {
+      "layout": "Form layout wrapped in KeyboardAvoidingView and ScrollView.",
+      "guidance": "Large image picker region at the top (dashed border, placeholder icon). Inputs for Title, Description (multiline), Price. Sticky 'Upload Artwork' primary button."
+    },
+    "Cart": {
+      "layout": "FlatList of cart items.",
+      "guidance": "Each row shows a small square thumbnail, Title, Price, and Remove (Trash) icon. Bottom fixed section shows Total Price and 'Buy Now' fake checkout button. If empty, show Empty State illustration and text."
+    },
+    "Profile": {
+      "layout": "Header with Google user info, followed by a grid of user's uploads.",
+      "guidance": "Avatar centered, large name, email. 'Logout' button with secondary outline style. Grid of uploaded artworks below."
+    }
+  },
+  "media": {
+    "icons": {
+      "library": "lucide-react-native",
+      "strokeWidth": 2,
+      "size": {
+        "sm": 20,
+        "md": 24,
+        "lg": 32
+      }
+    },
+    "placeholders": [
+      {
+        "id": "art-1",
+        "title": "Neon Dreams",
+        "author": "CyberPunk_99",
+        "price": "$120.00",
+        "url": "https://images.unsplash.com/photo-1701697966302-39b785a3380b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHw0fHxkaWdpdGFsJTIwYXJ0JTIwaWxsdXN0cmF0aW9ufGVufDB8fHx8MTc3Njg1OTkzMXww&ixlib=rb-4.1.0&q=85",
+        "aspectRatio": 1.0
+      },
+      {
+        "id": "art-2",
+        "title": "Yoga in the Void",
+        "author": "ZenMaster",
+        "price": "$45.00",
+        "url": "https://images.unsplash.com/photo-1657584942205-c34fec47404d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHwxfHxkaWdpdGFsJTIwYXJ0JTIwaWxsdXN0cmF0aW9ufGVufDB8fHx8MTc3Njg1OTkzMXww&ixlib=rb-4.1.0&q=85",
+        "aspectRatio": 1.5
+      },
+      {
+        "id": "art-3",
+        "title": "Pink Geometrics",
+        "author": "AbstractVibes",
+        "price": "$85.00",
+        "url": "https://images.unsplash.com/photo-1764258560296-5e228e6a20f3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHwzfHxkaWdpdGFsJTIwYXJ0JTIwaWxsdXN0cmF0aW9ufGVufDB8fHx8MTc3Njg1OTkzMXww&ixlib=rb-4.1.0&q=85",
+        "aspectRatio": 1.2
+      },
+      {
+        "id": "art-4",
+        "title": "Jungle Tablet",
+        "author": "NatureSketch",
+        "price": "$50.00",
+        "url": "https://images.pexels.com/photos/26563068/pexels-photo-26563068.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "aspectRatio": 1.4
+      },
+      {
+        "id": "art-5",
+        "title": "Gothic Spires",
+        "author": "DarkCastleArt",
+        "price": "$200.00",
+        "url": "https://images.unsplash.com/photo-1758930908621-550b64b0b1c1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHwzfHxmYW50YXN5JTIwbGFuZHNjYXBlJTIwY29uY2VwdCUyMGFydHxlbnwwfHx8fDE3NzY4NTk5MzF8MA&ixlib=rb-4.1.0&q=85",
+        "aspectRatio": 0.8
+      },
+      {
+        "id": "art-6",
+        "title": "Medieval Well",
+        "author": "FantasyWorld",
+        "price": "$110.00",
+        "url": "https://images.unsplash.com/photo-1775193823752-84a3c871f93a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHw0fHxmYW50YXN5JTIwbGFuZHNjYXBlJTIwY29uY2VwdCUyMGFydHxlbnwwfHx8fDE3NzY4NTk5MzF8MA&ixlib=rb-4.1.0&q=85",
+        "aspectRatio": 1.2
+      },
+      {
+        "id": "art-7",
+        "title": "Sunset Reflection",
+        "author": "GeoAbstracts",
+        "price": "$90.00",
+        "url": "https://images.unsplash.com/photo-1760693318333-d3ae15709511?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHwxfHxmYW50YXN5JTIwbGFuZHNjYXBlJTIwY29uY2VwdCUyMGFydHxlbnwwfHx8fDE3NzY4NTk5MzF8MA&ixlib=rb-4.1.0&q=85",
+        "aspectRatio": 1.3
+      },
+      {
+        "id": "art-8",
+        "title": "Desert Portal",
+        "author": "SurrealScapes",
+        "price": "$150.00",
+        "url": "https://images.unsplash.com/photo-1760693052314-d71e8b493c84?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHwyfHxmYW50YXN5JTIwbGFuZHNjYXBlJTIwY29uY2VwdCUyMGFydHxlbnwwfHx8fDE3NzY4NTk5MzF8MA&ixlib=rb-4.1.0&q=85",
+        "aspectRatio": 1.1
+      },
+      {
+        "id": "art-9",
+        "title": "Cloudy Stream",
+        "author": "LandscapeLover",
+        "price": "$75.00",
+        "url": "https://images.pexels.com/photos/15575235/pexels-photo-15575235.png?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "aspectRatio": 1.4
+      },
+      {
+        "id": "art-10",
+        "title": "The Thinker",
+        "author": "PortraitPro",
+        "price": "$60.00",
+        "url": "https://images.unsplash.com/photo-1667381515897-5c35f4da0c24?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwxfHxjaGFyYWN0ZXIlMjBkZXNpZ24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzY4NTk5MzF8MA&ixlib=rb-4.1.0&q=85",
+        "aspectRatio": 1.0
+      },
+      {
+        "id": "art-11",
+        "title": "Elder Tablet",
+        "author": "DigitalCreator",
+        "price": "$80.00",
+        "url": "https://images.pexels.com/photos/17890948/pexels-photo-17890948.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "aspectRatio": 1.4
+      },
+      {
+        "id": "art-12",
+        "title": "Forest Elf",
+        "author": "FantasyFaces",
+        "price": "$135.00",
+        "url": "https://images.pexels.com/photos/35989558/pexels-photo-35989558.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "aspectRatio": 1.4
+      }
+    ]
+  },
+  "motion_and_interactions": {
+    "press_scale": {
+      "active": 0.96,
+      "animation": "spring",
+      "damping": 15,
+      "stiffness": 300
+    },
+    "list_stagger": {
+      "type": "fade_slide_up",
+      "delay": 50,
+      "duration": 300
+    },
+    "page_transition": {
+      "type": "fade",
+      "duration": 200
+    }
+  },
+  "testing": {
+    "attributes": "All interactive elements MUST use testID attribute (React Native standard instead of data-testid). E.g. testID='login-google-button'."
+  }
+}
